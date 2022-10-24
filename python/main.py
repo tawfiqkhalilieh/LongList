@@ -104,6 +104,12 @@ class LongList:
         self.__dictionary = long.__dictionary
         return value if not _ else None # if the function romomed any duplicated value it should return it else it returns None
 
+    def contains(self, value):
+        for key in self.__dictionary:
+            if value in self.__dictionary[key]:
+                return True
+        return False
+    
     # TODO: sort method
 
 # define new LongList
