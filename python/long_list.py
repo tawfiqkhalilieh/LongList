@@ -1,6 +1,11 @@
 class LongList:
-    def __init__(self, lst:list = None): # simple constructor
-        if lst:
+    def __init__(self, lst:list = None, long: dict = None): # simple constructor
+        if long:
+            self.__dictionary = long["dictionary"]
+            self.values_dict = long["values_dict"]
+            self.last_list = long["last_list"]
+            self.len = long["len"]
+        elif lst:
             self.__dictionary = {
                 0: lst.copy(),
             }
@@ -151,8 +156,10 @@ class LongList:
         return value
 
     def reverse(self):
-        # TODO: connect the dictionary with the values dictionary
         reversed_dict = {
+
+        }
+        reversed_values_dict = {
 
         }
         cur_key = 0
@@ -160,6 +167,28 @@ class LongList:
             reversed_dict[cur_key] = self.__dictionary[key][::-1]
             cur_key+=1
         self.__dictionary = reversed_dict
+        # return reversed_dict
+
+        for key in ( key for key in self.__dictionary.keys() ):
+            for index,value in enumerate(self.__dictionary[key]):
+                if value not in reversed_values_dict:
+                    reversed_values_dict[value] = {
+                        'count' : 1,
+                        'locations' : [
+                            {
+                                'key': key,
+                                'index': index,
+                            }
+                        ]
+                    }
+                else:
+                    reversed_values_dict[value]['count'] += 1
+                    reversed_values_dict[value]['locations'].append({
+                        'key': key,
+                        'index': index,
+                    })
+        self.values_dict = reversed_values_dict
+
         return reversed_dict
 
     def index(self,value): return self.values_dict[value]['locations'][0] if value in self.values_dict else None
@@ -185,5 +214,15 @@ class LongList:
 
     def contains(self, value): return value in self.values_dict
 
-    # TODO: sort method
-
+    def sort(self,fun=None):
+        if not fun:
+            long = LongList()
+            keys = list(self.values_dict.keys())
+            keys.sort()
+            for key in keys:
+                for _ in self.values_dict[key]['locations']:
+                    long.append(key)
+            self.__dictionary = long.__dictionary
+            self.values_dict = long.values_dict
+        else:
+            fun(self.__dictionary,self.values_dict,self.len)

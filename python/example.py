@@ -75,10 +75,21 @@ assert long_list.remove_duplicated_value(10) == 10
 assert long_list.get_last_list() == [10,55,0,3,55]
 assert long_list.remove_duplicated_value(55) == 55
 assert long_list.get_last_list() == [10,55,0,3]
-assert long_list.remove_duplicated_value(0) == None
+assert not long_list.remove_duplicated_value(0)
 assert long_list.get_last_list() == [10,55,0,3]
 
 long_list = LongList([10,55,0,3,55,10])
 long_list.remove_all_duplicates()
 
 assert long_list.get_last_list() == [10,55,0,3]
+
+long_list.reverse()
+
+long_list = LongList([10,55,0,3,55,10])
+long_list.append(5)
+long_list.append(10)
+long_list.append(21)
+long_list.append(18)
+long_list.append(27)
+long_list.append(96)
+long_list.sort()
